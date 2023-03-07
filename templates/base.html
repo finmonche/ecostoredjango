@@ -11,24 +11,17 @@
 
 <link href="{% static 'images/favicon.ico' %}" rel="shortcut icon" type="image/x-icon">
 
-
 <script src="{% static 'js/jquery-2.0.0.min.js' %}" type="text/javascript"></script>
-
 <script src="{% static 'js/bootstrap.bundle.min.js'%}" type="text/javascript"></script>
 <link href="{% static 'css/bootstrap.css'%}" rel="stylesheet" type="text/css"/>
-
 
 <link href="{% static 'fonts/fontawesome/css/all.min.css' %}" type="text/css" rel="stylesheet">
 
 <link href="{% static 'css/ui.css' %}" rel="stylesheet" type="text/css"/>
 <link href="{% static 'css/responsive.css' %}" rel="stylesheet" media="only screen and (max-width: 1200px)" />
 
-
-
-
 <script type="text/javascript">
 $(document).ready(function() {
-
 
 }); 
 </script>
@@ -60,12 +53,19 @@ $(document).ready(function() {
         </div> 
         <div class="col-lg-3 col-sm-6 col-8 order-2 order-lg-3">
                     <div class="d-flex justify-content-end mb-3 mb-lg-0">
+                        {% if user.id is None %}
                         <div class="widget-header">
                             <div> 
-                                <a href="./signin.html">登入</a> <span class="dark-transp"> | </span>
-                                <a href="./register.html">註冊</a>
+                                <a href="{% url 'login' %}">登入</a> <span class="dark-transp"> | </span>
+                                <a href="{% url 'register' %}">註冊</a>
                             </div>
                         </div>
+                        {% else %}
+                        <div class="widget-header">
+                            <small class="title text-muted">歡迎回來!{{user.username}}</small>
+                            <div> 
+                        <a href="{% url 'logout' %}">登出</a>
+                        {% endif %}
                         <a href="{% url 'cart' %}" class="widget-header pl-3 ml-3">
                             <div class="icon icon-sm rounded-circle border"><i class="fa fa-shopping-cart"></i></div>
                         </a>
@@ -75,7 +75,6 @@ $(document).ready(function() {
         </div>
     </section> 
 {% block content %}{% endblock %}
-
 
 </body>
 </html>

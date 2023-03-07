@@ -3,16 +3,12 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 # Create your models here.
 
 class MyAccount(BaseUserManager):
-    def create_user(self, username, email, password=None):
-        if not email:
-            raise ValueError("請填寫郵件信箱")
-        
-        if not username:
-            raise ValueError("請填寫使用者名稱")
-        
+    def create_user(self, username, email, password):
+
         user = self.model(
             email = self.normalize_email(email),
-            username = username
+            username = username,
+            password = password
         )
         user.set_password(password)
         user.save(using=self._db)
@@ -35,7 +31,7 @@ class Account(AbstractBaseUser):
     username = models.CharField(max_length=11, unique=True, verbose_name="使用者帳號")
     email = models.EmailField(unique=True, verbose_name="信箱")
     phone_number = models.CharField(max_length=10, verbose_name="手機號碼")
-    
+    password = models.CharField(max_length=20, verbose_name="密碼")
     date_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=False)

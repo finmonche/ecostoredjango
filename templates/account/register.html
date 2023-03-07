@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="section-content padding-y">
+
+        <div class="card mx-auto" style="max-width:520px; margin-top:40px;">
+          <article class="card-body">
+            <header class="mb-4"><h4 class="card-title">註冊</h4></header>
+            <form action="{% url 'register'%}" method="POST">
+                {% csrf_token %}
+                    {% for field in form %}
+                <div class="form-group">
+                    {{field}}
+                    <span style="color:red;">{{ field.errors.0 }}</span>
+                </div>
+                    {% endfor %}
+                    <span style="color:red;">{{ message }}</span>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block">註冊</button>
+                    </div> 
+                        
+                </form>
+            </article>
+        </div> 
+        <p class="text-center mt-4">已經有帳號?<a href="{% url 'login'%}">登入</a></p>
+        <br><br>
+    </section>
+
+{% endblock %}

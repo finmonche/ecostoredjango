@@ -7,6 +7,8 @@ from django.template.loader import render_to_string
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
+from cart.views import _cart_id
+from cart.models import Cart, CartItem
 # Create your views here.
 
 def register(request):
@@ -43,6 +45,16 @@ def userlogin(request):
         user = authenticate(email=email, password=password)
         
         if user is not None:
+            try:
+                cart = Cart.objects.get(cart_id=_cart_id(request))
+                cart_items = CartItem.objects.get(cart=cart)
+                if cart_items:
+                    cart_item = CartItem.objects.filter(cart=cart)
+                    for item in cart_item:
+                        item.user = user
+                        item.save()                
+            except:
+                pass
             login(request, user)
             return redirect('/')
         else:

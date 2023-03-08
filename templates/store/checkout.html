@@ -8,7 +8,7 @@
             <aside class="col-lg-6 container">
                 <div class="card">
                     <h4 class="card-title mb-4">顧客資訊</h4>
-                        <form method="POST">
+                        <form method="POST" action={% url 'place_order' %}>
                         {% csrf_token %}
             <div class="form-group">
             <label for="">顧客姓名</label>
@@ -28,7 +28,7 @@
             </div>
             <div class="form-group">
             <label for="">郵遞區號</label>
-            <input type="text" name="username" class="form-control" required>
+            <input type="text" name="code" class="form-control" required>
             </div>
         </aside>
         <aside class="col-lg-6">
@@ -69,7 +69,7 @@
                     </table>
                 <button type="submit" name="submit" class="btn btn-primary btn-block">付款</button>
                 <a href="{% url 'store'%}" class="btn btn-light btn-block">繼續購物</a>
-                </form>
+            </form>
             </div> 
         </div>   
     </aside> 

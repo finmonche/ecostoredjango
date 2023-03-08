@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block js%}
+<script src="https://www.paypal.com/sdk/js?client-id=ATQpmE9rqn68nF63IlpD_nTf2rP4NJYqTIufMefVG0Rgo7HsBXXLWijEKAhuTJI_ZodVjYrdzlMvDmCt&enable-funding=venmo&currency=USD" data-sdk-integration-source="button-factory"></script>
+<script>
+  function initPayPalButton() {
+    paypal.Buttons({
+      style: {
+        shape: 'rect',
+        color: 'gold',
+        layout: 'vertical',
+        label: 'paypal',
+        
+      },
+
+      createOrder: function(data, actions) {
+        return actions.order.create({
+          purchase_units: [{"amount":{"currency_code":"USD","value":1}}]
+        });
+      },
+
+      onApprove: function(data, actions) {
+        return actions.order.capture().then(function(orderData) {
+          
+          // Full available details
+          console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+
+          // Show a success message within this page, e.g.
+          const element = document.getElementById('paypal-button-container');
+          element.innerHTML = '';
+          element.innerHTML = '<h3>Thank you for your payment!</h3>';
+
+          // Or go to another URL:  actions.redirect('thank_you.html');
+          
+        });
+      },
+
+      onError: function(err) {
+        console.log(err);
+      }
+    }).render('#paypal-button-container');
+  }
+  initPayPalButton();
+</script>
+{% endblock %}
+{% block content%}
+
+<section class="section-content padding-y bg">
+    <div class="container"> 
+    <div class="row">
+        <aside class="col-lg-7">
+        <div class="card">
+            <h5 class="card-header">顧客資訊</h5>
+            <div class="card-body">
+              <p class="card-text">姓名:{{order.username}}</p>
+              <p class="card-text">信箱:{{order.email}}</p>
+              <p class="card-text">電話:{{order.phone}}</p>
+              <p class="card-text">地址:{{order.address}}</p>
+            </div>
+          </div>
+          <div class="card">
+            <h5 class="card-header">付款方式</h5>
+            <div class="card-body">
+              <div id="paypal-button-container">
+
+
+              </div>
+            </div>
+          </div>
+        </aside>
+        <aside class="col-lg-4">
+            <div class="card">
+            <div class="card-body">
+                <dl class="dlist-align">
+                  <dt>總金額:</dt>
+                  <dd class="text-right">NT${{total}}</dd>
+                </dl>
+
+                <hr>
+                <div id="paypal-button-container">
+
+
+                </div>
+            </div> 
+            </div>
+    
+    </aside> 
+    </div> 
+    
+    </div> 
+    </section>
+{% endblock %}
